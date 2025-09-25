@@ -4,38 +4,40 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lab_week_06_76847.model.CatModel
-import com.example.lab_week_06_76847.R
 
 class CatAdapter(
     private val layoutInflater: LayoutInflater,
-    private val imageLoader: ImageLoader
+    private val imageLoader: ImageLoader,
+    private val onClickListener: OnClickListener
 ) : RecyclerView.Adapter<CatViewHolder>() {
 
-    // Mutable list for storing all the list data
+    // Mutable list untuk menyimpan semua data kucing
     private val cats = mutableListOf<CatModel>()
 
-    // A function to set the mutable list
+    // Fungsi untuk mengganti data list
     fun setData(newCats: List<CatModel>) {
         cats.clear()
         cats.addAll(newCats)
-        // Notify adapter that data has changed
-        notifyDataSetChanged()
+        notifyDataSetChanged() // kasih tau adapter kalau ada perubahan data
     }
 
-    // A view holder is used to bind the data to the layout views
-    // onCreateViewHolder is instantiating the view holder itself
+    // Membuat ViewHolder baru
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CatViewHolder {
         val view = layoutInflater.inflate(R.layout.item_list, parent, false)
-        return CatViewHolder(view, imageLoader)
+        return CatViewHolder(view, imageLoader, onClickListener)
     }
 
-    // This is used to get the amount of data/item in the list
+    // Jumlah item dalam list
     override fun getItemCount() = cats.size
 
-    // This is used to bind each data to each layout views
+    // Bind data ke ViewHolder
     override fun onBindViewHolder(holder: CatViewHolder, position: Int) {
-        // The holder parameter stores our previously created ViewHolder
-        // The holder.bindData function is declared in the CatViewHolder
         holder.bindData(cats[position])
     }
+
+    // Listener dari Adapter
+    interface OnClickListener {
+        fun onItemClick(cat: CatModel)
+    }
+
 }
