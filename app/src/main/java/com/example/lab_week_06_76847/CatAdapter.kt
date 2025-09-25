@@ -2,6 +2,7 @@ package com.example.lab_week_06_76847
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.lab_week_06_76847.model.CatModel
 
@@ -40,4 +41,25 @@ class CatAdapter(
         fun onItemClick(cat: CatModel)
     }
 
+    // Class untuk swipe delete
+    inner class SwipeToDeleteCallback : ItemTouchHelper.SimpleCallback(
+        0,
+        ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+    ) {
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean = false
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            val position = viewHolder.adapterPosition
+            removeItem(position)
+        }
+    }
+
+    fun removeItem(position: Int) {
+        cats.removeAt(position)
+        notifyItemRemoved(position)
+    }
 }
